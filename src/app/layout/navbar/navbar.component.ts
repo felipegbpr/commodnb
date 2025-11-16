@@ -6,10 +6,11 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { MenuModule } from 'primeng/menu';
 import { CategoryComponent } from './category/category.component';
 import { AvatarComponent } from './avatar/avatar.component';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MenuItem } from 'primeng/api';
 import { ToastService } from '../toast.service';
 import { User } from '../../core/model/user.model';
+import { PropertiesCreateComponent } from '../../landlord/properties-create/properties-create.component';
 
 @Component({
   selector: 'app-navbar',
@@ -34,6 +35,7 @@ export class NavbarComponent implements OnInit {
   toastService = inject(ToastService);
   authService = inject(AuthService);
   dialogService = inject(DialogService);
+  ref: DynamicDialogRef | undefined;
 
   login = () => this.authService.login();
 
@@ -95,5 +97,17 @@ export class NavbarComponent implements OnInit {
 
   hasToBeLandlord(): boolean {
     return this.authService.hasAnyAuthority('ROLE_LANDLORD');
+  }
+
+ openNewListing(): void {
+    this.ref = this.dialogService.open(PropertiesCreateComponent,
+      {
+        width: "60%",
+        header: "Commondnb your home",
+        closable: true,
+        focusOnShow: true,
+        modal: true,
+        showHeader: true
+      })
   }
 }
